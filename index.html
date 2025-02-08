@@ -13,32 +13,45 @@
     .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
     .upload-area { border: 2px dashed #4a5568; background-color: #edf2f7; transition: background-color 0.3s ease; }
     .upload-area:hover { background-color: #e2e8f0; }
+    .navbar { background-color: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .nav-link { padding: 15px 20px; cursor: pointer; transition: background-color 0.3s; }
+    .nav-link:hover, .nav-link.active { background-color: #e2e8f0; border-radius: 10px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
-<body class="min-h-screen p-8">
-  <h1 class="text-5xl font-extrabold text-center mb-8">Longhorn Link</h1>
-  
-  <div class="max-w-4xl mx-auto mb-8 upload-area p-6 rounded-lg shadow-inner text-center">
-    <label for="resume-upload" class="block text-2xl font-medium text-gray-700 mb-4">Upload Your Resume</label>
-    <input type="file" id="resume-upload" accept=".pdf,.doc,.docx" class="block mx-auto text-gray-700 p-2 border border-gray-400 rounded-lg shadow-sm cursor-pointer" />
+<body class="min-h-screen">
+  <nav class="navbar p-4 flex justify-center space-x-4">
+    <div class="nav-link active" onclick="switchTab('upload-tab')">Upload Resume</div>
+    <div class="nav-link" onclick="switchTab('interested-tab')">Interested Clubs</div>
+  </nav>
+
+  <h1 class="text-5xl font-extrabold text-center my-8">Longhorn Link</h1>
+
+  <div id="upload-tab" class="tab-content active p-8">
+    <div class="max-w-4xl mx-auto mb-8 upload-area p-6 rounded-lg shadow-inner text-center">
+      <label for="resume-upload" class="block text-2xl font-medium text-gray-700 mb-4">Upload Your Resume</label>
+      <input type="file" id="resume-upload" accept=".pdf,.doc,.docx,.txt" class="block mx-auto text-gray-700 p-2 border border-gray-400 rounded-lg shadow-sm cursor-pointer" />
+    </div>
+
+    <div id="club-list" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6"></div>
   </div>
 
-  <div id="club-list" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-
-  <div class="max-w-4xl mx-auto mt-12 p-6 bg-white shadow-lg rounded-2xl">
-    <h2 class="text-3xl font-semibold mb-4">Your Interested Clubs</h2>
-    <ul id="interested-clubs" class="list-disc pl-5 space-y-2 text-xl text-gray-700"></ul>
-    <p id="no-clubs" class="text-gray-600">You haven't selected any clubs yet.</p>
+  <div id="interested-tab" class="tab-content p-8">
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-2xl">
+      <h2 class="text-3xl font-semibold mb-4">Your Interested Clubs</h2>
+      <ul id="interested-clubs" class="list-disc pl-5 space-y-2 text-xl text-gray-700"></ul>
+      <p id="no-clubs" class="text-gray-600">You haven't selected any clubs yet.</p>
+    </div>
   </div>
 
   <script>
     const clubData = {
-      'Texas Robotics': ['robotics', 'automation', 'engineering', 'code'],
+      'Texas Robotics': ['robotics', 'automation', 'engineering'],
       'Women in Engineering Program': ['women', 'engineering', 'support'],
       'UT Programming Club': ['programming', 'coding', 'software'],
       'Longhorn Entrepreneurship Agency': ['entrepreneurship', 'startup', 'business'],
-      'AI Society at UT': ['artificial intelligence', 'machine learning', 'data science'],
-      'Longhorn Quidditch': ['sports']
+      'AI Society at UT': ['artificial intelligence', 'machine learning', 'data science']
     };
 
     const clubList = document.getElementById('club-list');
@@ -47,6 +60,14 @@
     const resumeUpload = document.getElementById('resume-upload');
 
     let selectedClubs = [];
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-link').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      document.querySelector(`[onclick="switchTab('${tabId}')"]`).classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
 
     function updateInterestedClubs() {
       interestedClubs.innerHTML = '';
@@ -128,4 +149,4 @@
     lucide.createIcons();
   </script>
 </body>
-</html> 
+</html>
