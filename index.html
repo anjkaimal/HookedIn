@@ -155,7 +155,52 @@
       document.getElementById(tabId).classList.add('active');
     }
 
-    function updateInterestedClubs() {
+    function displaySuggestedClubs(suggestedClubs) {
+    clubList.innerHTML = '';
+    suggestedClubs.forEach(club => {
+      if (!selectedClubs.includes(club)) {
+        const card = document.createElement('div');
+        card.className = 'p-4 shadow-lg rounded-2xl bg-white card';
+
+        const clubName = document.createElement('h2');
+        clubName.className = 'text-2xl font-semibold mb-4';
+        clubName.textContent = club;
+        card.appendChild(clubName);
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'flex justify-between';
+
+        // Interested button
+        const interestedButton = document.createElement('button');
+        interestedButton.className = 'flex items-center px-4 py-2 rounded-xl shadow-md bg-green-500 text-white';
+        interestedButton.innerHTML = '<i data-lucide="check" class="mr-2"></i> Interested';
+        interestedButton.onclick = () => {
+          if (!selectedClubs.includes(club)) {
+            selectedClubs.push(club);
+            updateInterestedClubs();
+            displaySuggestedClubs(suggestedClubs.filter(c => c !== club));
+          }
+        };
+
+        // Not Interested button
+        const notInterestedButton = document.createElement('button');
+        notInterestedButton.className = 'flex items-center px-4 py-2 rounded-xl shadow-md bg-red-500 text-white';
+        notInterestedButton.innerHTML = '<i data-lucide="x" class="mr-2"></i> Not Interested';
+        notInterestedButton.onclick = () => {
+          displaySuggestedClubs(suggestedClubs.filter(c => c !== club));
+        };
+
+        buttonContainer.appendChild(interestedButton);
+        buttonContainer.appendChild(notInterestedButton);
+        card.appendChild(buttonContainer);
+
+        clubList.appendChild(card);
+      }
+    });
+    lucide.createIcons();
+  }
+
+  function updateInterestedClubs() {
     interestedClubs.innerHTML = '';
     if (selectedClubs.length === 0) {
       noClubsMessage.style.display = 'block';
@@ -169,73 +214,30 @@
     }
   }
 
-  resumeUpload.addEventListener('change', (event) => {
-  const file = event.target.files[0];
-  if (file && file.type.includes('text')) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const textContent = e.target.result.toLowerCase();
-      const suggestedClubs = Object.keys(clubData).filter(club => {
-        return clubData[club].some(keyword => textContent.includes(keyword));
-      });
 
-      if (suggestedClubs.length > 0) {
-        displaySuggestedClubs(suggestedClubs);
+    resumeUpload.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file && file.type.includes('text')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const textContent = e.target.result.toLowerCase();
+          const suggestedClubs = Object.keys(clubData).filter(club => {
+            return clubData[club].some(keyword => textContent.includes(keyword));
+          });
+
+          if (suggestedClubs.length > 0) {
+            displaySuggestedClubs(suggestedClubs);
+          } else {
+            clubList.innerHTML = '<p class="text-center text-gray-600">No clubs matched your resume. Try selecting manually!</p>';
+          }
+        };
+        reader.readAsText(file);
       } else {
-        clubList.innerHTML = '<p class="text-center text-gray-600">No clubs matched your resume. Try selecting manually!</p>';
+        alert('Please upload a text-based resume (.txt format). PDF/Word support coming soon!');
       }
-    };
-    reader.readAsText(file);
-  } else {
-    alert('Please upload a text-based resume (.txt format). PDF/Word support coming soon!');
-  }
-});
+    });
 
-function displaySuggestedClubs(suggestedClubs) {
-  clubList.innerHTML = ''; // Clear the previous club list
-  suggestedClubs.forEach(club => {
-    if (!selectedClubs.includes(club)) {
-      const card = document.createElement('div');
-      card.className = 'p-4 shadow-lg rounded-2xl bg-white card';
-
-      const clubName = document.createElement('h2');
-      clubName.className = 'text-2xl font-semibold mb-4';
-      clubName.textContent = club;
-      card.appendChild(clubName);
-
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'flex justify-between';
-
-      // Interested button
-      const interestedButton = document.createElement('button');
-      interestedButton.className = 'flex items-center px-4 py-2 rounded-xl shadow-md bg-green-500 text-white';
-      interestedButton.innerHTML = '<i data-lucide="check" class="mr-2"></i> Interested';
-      interestedButton.onclick = () => {
-        if (!selectedClubs.includes(club)) {
-          selectedClubs.push(club);
-          updateInterestedClubs();
-          displaySuggestedClubs(suggestedClbs.filter(c => c !== club));  // Remove the selected club from the list
-        }
-      };
-
-      // Not Interested button
-      const notInterestedButton = document.createElement('button');
-      notInterestedButton.className = 'flex items-center px-4 py-2 rounded-xl shadow-md bg-red-500 text-white';
-      notInterestedButton.innerHTML = '<i data-lucide="x" class="mr-2"></i> Not Interested';
-      notInterestedButton.onclick = () => {
-        displaySuggestedClubs(suggestedClubs.filter(c => c !== club));
-      };
-
-      buttonContainer.appendChild(interestedButton);
-      buttonContainer.appendChild(notInterestedButton);
-      card.appendChild(buttonContainer);
-
-      clubList.appendChild(card);
-    }
-  });
-  lucide.createIcons();
-}
-
+    lucide.createIcons();
   </script>
 </body>
 </html>
