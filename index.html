@@ -179,17 +179,20 @@
     }
 
     
-    let userInterests = [];
+    let userInterests = [];  // Store user's interests
 
+    // Modify the addInterest function to store the user's interest
     function addInterest() {
       const interest = interestsInput.value.trim();
       if (interest && !userInterests.includes(interest)) {
-        userInterests.push(interest);
-        interestsInput.value = '';
-        updateInterestsDisplay();
+        userInterests.push(interest);  // Add the new interest to the list
+        interestsInput.value = '';  // Clear the input
+        updateInterestsDisplay();  // Update the display of interests
+        suggestClubs();  // Call the function to suggest clubs based on new interest
       }
     }
 
+    // Update the display of interests
     function updateInterestsDisplay() {
       interestsDisplay.innerHTML = '';
       if (userInterests.length === 0) {
