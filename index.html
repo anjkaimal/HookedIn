@@ -18,40 +18,78 @@
     .nav-link:hover, .nav-link.active { background-color: #e2e8f0; border-radius: 10px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+    .hidden { display: none; }
   </style>
 </head>
 <body class="min-h-screen">
-  <nav class="navbar p-4 flex justify-center space-x-4">
-    <div class="nav-link active" onclick="switchTab('upload-tab')">Upload Resume</div>
-    <div class="nav-link" onclick="switchTab('interested-tab')">Interested Clubs</div>
-  </nav>
 
-  <h1 class="text-5xl font-extrabold text-center my-8">Longhorn Link</h1>
-
-  <div id="upload-tab" class="tab-content active p-8">
-    <div class="max-w-4xl mx-auto mb-8 upload-area p-6 rounded-lg shadow-inner text-center">
-      <label for="resume-upload" class="block text-2xl font-medium text-gray-700 mb-4">Upload Your Resume</label>
-      <input type="file" id="resume-upload" accept=".pdf,.doc,.docx,.txt" class="block mx-auto text-gray-700 p-2 border border-gray-400 rounded-lg shadow-sm cursor-pointer" />
+  <!-- Welcome Screen -->
+  <div id="welcome-screen" class="min-h-screen flex items-center justify-center bg-white">
+    <div class="p-8 bg-gray-100 rounded-xl shadow-lg w-full max-w-md text-center">
+      <h1 class="text-5xl font-bold text-blue-600 mb-6">Longhorn Link</h1>
+      <p class="text-lg text-gray-700 mb-8">Connect with UT clubs that match your interests!</p>
+      <button onclick="showLoginScreen()" class="w-full bg-blue-500 text-white p-3 rounded-lg shadow hover:bg-blue-600 transition mb-4">Login</button>
+      <button onclick="showSignUpScreen()" class="w-full bg-green-500 text-white p-3 rounded-lg shadow hover:bg-green-600 transition">Sign Up</button>
     </div>
-
-    <div id="club-list" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6"></div>
   </div>
 
-  <div id="interested-tab" class="tab-content p-8">
-    <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-2xl">
-      <h2 class="text-3xl font-semibold mb-4">Your Interested Clubs</h2>
-      <ul id="interested-clubs" class="list-disc pl-5 space-y-2 text-xl text-gray-700"></ul>
-      <p id="no-clubs" class="text-gray-600">You haven't selected any clubs yet.</p>
+  <!-- Sign Up Screen -->
+  <div id="signup-screen" class="hidden min-h-screen flex items-center justify-center bg-white">
+    <div class="p-8 bg-gray-100 rounded-xl shadow-lg w-full max-w-md">
+      <h1 class="text-4xl font-bold text-center mb-6">Sign Up</h1>
+      <input type="text" id="signup-username" placeholder="Username" class="block w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400">
+      <input type="password" id="signup-password" placeholder="Password" class="block w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400">
+      <button onclick="signup()" class="w-full bg-green-500 text-white p-3 rounded-lg shadow hover:bg-green-600 transition">Create Account</button>
+      <p class="text-center mt-4 text-sm text-gray-600">Already have an account? <span class="text-blue-500 cursor-pointer" onclick="showLoginScreen()">Login</span></p>
+    </div>
+  </div>
+
+  <!-- Login Screen -->
+  <div id="login-screen" class="hidden min-h-screen flex items-center justify-center bg-white">
+    <div class="p-8 bg-gray-100 rounded-xl shadow-lg w-full max-w-md">
+      <h1 class="text-4xl font-bold text-center mb-6">Login</h1>
+      <input type="text" id="username" placeholder="Username" class="block w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <input type="password" id="password" placeholder="Password" class="block w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <button onclick="login()" class="w-full bg-blue-500 text-white p-3 rounded-lg shadow hover:bg-blue-600 transition">Login</button>
+      <p class="text-center mt-4 text-sm text-gray-600">Don't have an account? <span class="text-green-500 cursor-pointer" onclick="showSignUpScreen()">Sign Up</span></p>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="main-app" class="hidden">
+    <nav class="navbar p-4 flex justify-center space-x-4">
+      <div class="nav-link active" onclick="switchTab('upload-tab')">Upload Resume</div>
+      <div class="nav-link" onclick="switchTab('interested-tab')">Interested Clubs</div>
+      <div class="nav-link" onclick="logout()">Logout</div>
+    </nav>
+
+    <h1 class="text-5xl font-extrabold text-center my-8">Longhorn Link</h1>
+
+    <div id="upload-tab" class="tab-content active p-8">
+      <div class="max-w-4xl mx-auto mb-8 upload-area p-6 rounded-lg shadow-inner text-center">
+        <label for="resume-upload" class="block text-2xl font-medium text-gray-700 mb-4">Upload Your Resume</label>
+        <input type="file" id="resume-upload" accept=".pdf,.doc,.docx,.txt" class="block mx-auto text-gray-700 p-2 border border-gray-400 rounded-lg shadow-sm cursor-pointer" />
+      </div>
+
+      <div id="club-list" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+
+    <div id="interested-tab" class="tab-content p-8">
+      <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-2xl">
+        <h2 class="text-3xl font-semibold mb-4">Your Interested Clubs</h2>
+        <ul id="interested-clubs" class="list-disc pl-5 space-y-2 text-xl text-gray-700"></ul>
+        <p id="no-clubs" class="text-gray-600">You haven't selected any clubs yet.</p>
+      </div>
     </div>
   </div>
 
   <script>
     const clubData = {
-      'Hispanic Association of Computer Scientists': ['hispanic', 'computer science', 'engineering', 'coding', 'code'],
-      'Women in Computer Science': ['women', 'computer science', 'engineering', 'coding', 'code'],
+      'Texas Robotics': ['robotics', 'automation', 'engineering'],
+      'Women in Engineering Program': ['women', 'engineering', 'support'],
+      'UT Programming Club': ['programming', 'coding', 'software'],
       'Longhorn Entrepreneurship Agency': ['entrepreneurship', 'startup', 'business'],
-      'AI Society at UT': ['artificial intelligence', 'machine learning', 'data science'],
-      'Longhorn Quidditch': ['sports']
+      'AI Society at UT': ['artificial intelligence', 'machine learning', 'data science']
     };
 
     const clubList = document.getElementById('club-list');
@@ -59,7 +97,52 @@
     const noClubsMessage = document.getElementById('no-clubs');
     const resumeUpload = document.getElementById('resume-upload');
 
+    let users = {};
     let selectedClubs = [];
+
+    function showLoginScreen() {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      document.getElementById('signup-screen').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    function showSignUpScreen() {
+      document.getElementById('welcome-screen').classList.add('hidden');
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('signup-screen').classList.remove('hidden');
+    }
+
+    function signup() {
+      const username = document.getElementById('signup-username').value;
+      const password = document.getElementById('signup-password').value;
+
+      if (username && password) {
+        users[username] = password;
+        alert('Account created successfully! Please log in.');
+        showLoginScreen();
+      } else {
+        alert('Please enter both username and password to sign up.');
+      }
+    }
+
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (users[username] && users[username] === password) {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('main-app').classList.remove('hidden');
+      } else {
+        alert('Incorrect username or password. Please try again.');
+      }
+    }
+
+    function logout() {
+      document.getElementById('main-app').classList.add('hidden');
+      document.getElementById('welcome-screen').classList.remove('hidden');
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+    }
 
     function switchTab(tabId) {
       document.querySelectorAll('.nav-link').forEach(tab => tab.classList.remove('active'));
@@ -86,40 +169,34 @@
     function displaySuggestedClubs(suggestedClubs) {
       clubList.innerHTML = '';
       suggestedClubs.forEach(club => {
-        const card = document.createElement('div');
-        card.className = 'p-4 shadow-lg rounded-2xl bg-white card';
+        if (!selectedClubs.includes(club)) {
+          const card = document.createElement('div');
+          card.className = 'p-4 shadow-lg rounded-2xl bg-white card';
 
-        const clubName = document.createElement('h2');
-        clubName.className = 'text-2xl font-semibold mb-4';
-        clubName.textContent = club;
-        card.appendChild(clubName);
+          const clubName = document.createElement('h2');
+          clubName.className = 'text-2xl font-semibold mb-4';
+          clubName.textContent = club;
+          card.appendChild(clubName);
 
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'flex justify-between';
+          const buttonContainer = document.createElement('div');
+          buttonContainer.className = 'flex justify-between';
 
-        const interestedButton = document.createElement('button');
-        interestedButton.className = 'flex items-center px-4 py-2 rounded-xl shadow-md bg-green-500 text-white';
-        interestedButton.innerHTML = '<i data-lucide="check" class="mr-2"></i> Interested';
-        interestedButton.onclick = () => {
-          if (!selectedClubs.includes(club)) {
-            selectedClubs.push(club);
-            updateInterestedClubs();
-          }
-        };
+          const interestedButton = document.createElement('button');
+          interestedButton.className = 'flex items-center px-4 py-2 rounded-xl shadow-md bg-green-500 text-white';
+          interestedButton.innerHTML = '<i data-lucide="check" class="mr-2"></i> Interested';
+          interestedButton.onclick = () => {
+            if (!selectedClubs.includes(club)) {
+              selectedClubs.push(club);
+              updateInterestedClubs();
+              displaySuggestedClubs(suggestedClubs.filter(c => c !== club));
+            }
+          };
 
-        const notInterestedButton = document.createElement('button');
-        notInterestedButton.className = 'flex items-center px-4 py-2 rounded-xl shadow-md bg-red-500 text-white';
-        notInterestedButton.innerHTML = '<i data-lucide="x" class="mr-2"></i> Not Interested';
-        notInterestedButton.onclick = () => {
-          selectedClubs = selectedClubs.filter(c => c !== club);
-          updateInterestedClubs();
-        };
+          buttonContainer.appendChild(interestedButton);
+          card.appendChild(buttonContainer);
 
-        buttonContainer.appendChild(interestedButton);
-        buttonContainer.appendChild(notInterestedButton);
-        card.appendChild(buttonContainer);
-
-        clubList.appendChild(card);
+          clubList.appendChild(card);
+        }
       });
       lucide.createIcons();
     }
