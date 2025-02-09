@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Longhorn Link</title>
+  <title>HookedIn</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -24,14 +24,24 @@
 <body class="min-h-screen">
 
   <!-- Welcome Screen -->
-  <div id="welcome-screen" class="min-h-screen flex items-center justify-center bg-white">
-    <div class="p-8 bg-gray-100 rounded-xl shadow-lg w-full max-w-md text-center">
-      <h1 class="text-5xl font-bold text-blue-600 mb-6">Longhorn Link</h1>
-      <p class="text-lg text-gray-700 mb-8">Connect with UT clubs that match your interests!</p>
-      <button onclick="showLoginScreen()" class="w-full bg-blue-500 text-white p-3 rounded-lg shadow hover:bg-blue-600 transition mb-4">Login</button>
-      <button onclick="showSignUpScreen()" class="w-full bg-green-500 text-white p-3 rounded-lg shadow hover:bg-green-600 transition">Sign Up</button>
+  <div id="welcome-screen" class="min-h-screen flex items-center justify-center bg-white relative">
+    <img src="HookedIn.png" alt="Welcome Design" class="absolute inset-0 w-full h-full object-cover z-0">
+    
+    <div class="p-8 bg-white bg-opacity-90 rounded-2xl shadow-xl w-full max-w-md text-center z-10">
+      <button onclick="showLoginScreen()" 
+        class="w-full bg-[#BF5700] text-white text-lg font-semibold p-4 rounded-full shadow-lg hover:bg-[#a64a00] transition mb-4">
+        Login
+      </button>
+      
+      <button onclick="showSignUpScreen()" 
+        class="w-full bg-[#BF5700] text-white text-lg font-semibold p-4 rounded-full shadow-lg hover:bg-[#a64a00] transition">
+        Sign Up
+      </button>
     </div>
+    
+    
   </div>
+  
 
   <!-- Sign Up Screen -->
   <div id="signup-screen" class="hidden min-h-screen flex items-center justify-center bg-white">
